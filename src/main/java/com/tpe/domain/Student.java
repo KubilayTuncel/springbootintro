@@ -41,7 +41,7 @@ public class Student {
     @Email(message = "Provide valid email")
     /*final*/ private String email;
 
-    /*final*/ private String phoneNummer;
+    /*final*/ private String phoneNumber;
 
     @Setter(AccessLevel.NONE) //bu anatation class seviyesinde yazdigimiz icin olusacak tüm setler icerisinde
                                 //bu value icin set edilemez olarak ayarlayabiliyoruz.
