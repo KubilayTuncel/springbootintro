@@ -47,7 +47,8 @@ public class StudentService {
         if(existEmail && ! studentDTO.getEmail().equals(student.getEmail())){
             throw  new ConflictException("Email is already exist ");
                    /*
-                    POJO CLASS , DTO Burada database de mevcut olan email adresini baska bir kullanici setleme yaparken ayni bir email adresi
+                    POJO CLASS , DTO Burada database de mevcut olan email adresini baska bir
+                     kullanici setleme yaparken ayni bir email adresi
                      yazarsak cakismasini önledik.
 
             1) kendi email : mrc , mrc --> TRUE && FALSE (UPDATE OLUR)
@@ -66,5 +67,23 @@ public class StudentService {
 
     public Page<Student> getAllWithPage(Pageable pageable) {
         return studentRepository.findAll(pageable);
+    }
+
+    public List<Student> findStudent(String lastName) {
+
+       return studentRepository.findByLastName(lastName);
+
+    }
+
+    public List<Student> findAllEqualsGrade(Integer grade){
+
+        return studentRepository.findAllEqualsGrade(grade);
+
+    }
+
+    public StudentDTO findStudentDTOById(Long id) {
+
+        return studentRepository.findStudentDTOById(id).orElseThrow(()->
+                new ResourceNotFoundException("Student not found with id : "+id));
     }
 }

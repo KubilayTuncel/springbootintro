@@ -106,6 +106,34 @@ public class StudentController {
 
     }
 
+    @GetMapping("/querylastname") //http://localhost:8080/students/querylastname?lastName=Bey
+    public ResponseEntity<List<Student>> getStudentByLastName(@RequestParam("lastName") String lastName){
+
+        List<Student> list = studentService.findStudent(lastName);
+
+        return ResponseEntity.ok(list);
+
+    }
+
+
+    //!!! Get All Student By grade (JPQL) Java persistence (kalici) Query Language
+    @GetMapping("/grade/{grade}") //http://localhost:8080/students/grade/75
+    public ResponseEntity<List<Student>> getStudentsEqualsGrade(@PathVariable ("grade") Integer grade) {
+
+        List<Student> list = studentService.findAllEqualsGrade(grade);
+
+        return ResponseEntity.ok(list);
+    }
+
+    //!!! DB den direk DTO olarak data alabilir miyim?
+    @GetMapping("/query/dto") //http://localhost:8080/students/query/dto?id=1
+    public ResponseEntity<StudentDTO> getStudentDTO(@RequestParam("id") Long id){
+
+     StudentDTO studentDTO = studentService.findStudentDTOById(id);
+
+     return ResponseEntity.ok(studentDTO);
+    }
+
 
 
 }
