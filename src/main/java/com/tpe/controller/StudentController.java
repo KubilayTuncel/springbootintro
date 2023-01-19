@@ -4,6 +4,8 @@ package com.tpe.controller;
 import com.tpe.domain.Student;
 import com.tpe.dto.StudentDTO;
 import com.tpe.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +24,8 @@ import java.util.Map;
 @RestController //Restfull API kullanip Control yaptigimiz icin Controller yerine RestController yazdik
 @RequestMapping ("/students")
 public class StudentController {
+
+    Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     private StudentService studentService;
@@ -135,5 +141,13 @@ public class StudentController {
     }
 
 
+    @GetMapping("/welcome") //http://localhost:8080/students/welcome + GET
+    public String welcome(HttpServletRequest request) { //HttpSErvletREquest ile request e ulastik
+
+        logger.warn("---------------Welcome {}",request.getServletPath());
+
+        return "Welcome the Student Controller";
+
+    }
 
 }

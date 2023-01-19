@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter //Lombok tool'u sayesinde gette ve setter'lari bizim yerimize olusturuyor. O yüzden bizim olusturmamiza gerek kalmiyor
 @Setter
@@ -46,5 +48,12 @@ public class Student {
     @Setter(AccessLevel.NONE) //bu anatation class seviyesinde yazdigimiz icin olusacak tüm setler icerisinde
                                 //bu value icin set edilemez olarak ayarlayabiliyoruz.
     private LocalDateTime createDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "student")
+    private List<Book> books = new ArrayList<>();
+
+    @JoinColumn(name="user_id")
+    @OneToOne
+    private User user;
 
 }
