@@ -37,7 +37,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
                          user.getPassword(),
                          buildGrantedAuthorities(user.getRoles()));
         }else {
-            throw  new UsernameNotFoundException("user not found username : " + username)
+            throw  new UsernameNotFoundException("user not found username : " + username);
         }
 
 

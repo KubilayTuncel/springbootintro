@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) //method seviyesinde güvenlik katmani calistirmak istiyoruz.
+//@EnableGlobalMethodSecurity(prePostEnabled = true) //method seviyesinde güvenlik katmani calistirmak istiyoruz.
                                                     //Bu yüzden bu anatation ekledik.
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -29,7 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().
                 authorizeHttpRequests().
-                antMatchers("/","index.html","/css/*","/js/*").permitAll(). //Bu satirda verdigimiz endpointleri security muaf tut demis olduk
+                antMatchers("/","index.html","/css/*","/js/*","/register").permitAll().
+                //Bu satirda verdigimiz endpointleri security muaf tut demis olduk
+                and().authorizeRequests().antMatchers("/students/**").hasRole("ADMIN").
+                //Bu satirda endpoint bazinda role kismini calistirabiliyoruz.
+                // Bu sekilde verdigimiz endpoint ve altindaki kisimlarda admin auth. olanlar request edebiliyor.
+                // bu yüzden biz istersek bu satirla nasil autorization yapicagimiza karar verebilir ya da yukaridaki
+                //EnableGlobalMethodSecurity ile yapabiliyoruz.
                 anyRequest().authenticated().and().httpBasic(); //onun haricindekileri authenticated et diyoruz. yani sifre iste.
     }
 
@@ -45,19 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //2. olarak DaoAuthenticationProvider olusturuyoruz.
     @Bean
-    public DaoAuthenticationProvider autProvider() {
+    public DaoAuthenticationProvider authProvider() {
 
-        DaoAuthenticationProvider autProvider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        autProvider.setUserDetailsPasswordService(userDetailsService);
-        autProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
 
+        return authProvider;
     }
 
 
     //3. olarak bu configure class ini override ettik.
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(autProvider());
+        auth.authenticationProvider(authProvider());
     }
 }

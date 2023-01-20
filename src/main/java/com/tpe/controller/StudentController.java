@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class StudentController {
 
 
     @GetMapping //http://localhost:8080/students + GET
+    @PreAuthorize("hasRole('ADMIN')") //hasRole anatation i ROLE_ADMIN yazmamiza gerek yok cünkü hasRole bu isi yapiyor.
     public ResponseEntity<List<Student>> getAll() { //ResponseEntity ile status code gönderimini sagliyoruz.
 
         List<Student> students = studentService.getAll();
